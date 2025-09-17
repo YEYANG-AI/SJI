@@ -21,6 +21,7 @@ class _PinScreenState extends State<PinScreen> {
   bool _isAuthenticating = false;
   bool _hasNavigated = false;
   bool _isLogin = false;
+  bool _isPinVerified = false;
 
   late final PinService _pinService;
   late final BiometricService _biometricService;
@@ -37,7 +38,6 @@ class _PinScreenState extends State<PinScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _handleRouteArguments();
-    _handleBiometricAuthOnLogin();
   }
 
   @override
@@ -60,20 +60,21 @@ class _PinScreenState extends State<PinScreen> {
     debugPrint('PinScreen - Final isLogin: $_isLogin');
   }
 
-  void _handleBiometricAuthOnLogin() {
-    if (_isLogin && !_hasNavigated && !_isAuthenticating) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && !_hasNavigated) {
-          _attemptBiometricAuth();
-        }
-      });
-    }
-  }
-
   Future<void> _attemptBiometricAuth() async {
-    if (_isAuthenticating || _hasNavigated || !mounted) {
+    if (!_isPinVerified) {
+      // ถ้า PIN ยังไม่ผ่าน → แจ้งเตือน
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please verify your PIN first'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
       return;
     }
+
+    if (_isAuthenticating || _hasNavigated || !mounted) return;
 
     setState(() {
       _isAuthenticating = true;
@@ -89,6 +90,7 @@ class _PinScreenState extends State<PinScreen> {
         setState(() {
           _isAuthenticating = false;
         });
+        _showErrorMessage('Biometric Authentication Failed');
       }
     } catch (e) {
       debugPrint('Biometric auth error: $e');
@@ -192,10 +194,22 @@ class _PinScreenState extends State<PinScreen> {
 
       if (mounted && !_hasNavigated) {
         if (isValid) {
+          // PIN ถูกต้อง → เริ่ม Biometric
           setState(() {
-            _hasNavigated = true;
+            _isAuthenticating = true;
           });
-          Navigator.pushReplacementNamed(context, '/bottomBar');
+          final biometricSuccess = await _biometricService.authenticate(
+            context: context,
+            onAuthSuccess: _onAuthSuccess,
+          );
+
+          if (!biometricSuccess) {
+            _showErrorMessage('Biometric Authentication Failed');
+            setState(() {
+              _isAuthenticating = false;
+              _pin = '';
+            });
+          }
         } else {
           _showErrorMessage('PIN is Incorrect');
           setState(() {
