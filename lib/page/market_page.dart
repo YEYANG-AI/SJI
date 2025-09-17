@@ -288,7 +288,7 @@ class _TradePageState extends State<MarketPage> {
                         children: [
                           Container(
                             height: 120,
-                            width: 180,
+                            width: 150,
                             decoration: BoxDecoration(
                               color: Colors.black,
                               borderRadius: BorderRadius.circular(10),
@@ -306,7 +306,7 @@ class _TradePageState extends State<MarketPage> {
                           ),
                           Container(
                             height: 120,
-                            width: 180,
+                            width: 150,
                             decoration: BoxDecoration(
                               color: Colors.black,
                               borderRadius: BorderRadius.circular(10),

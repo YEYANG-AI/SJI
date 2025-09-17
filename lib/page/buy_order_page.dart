@@ -55,7 +55,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
               children: [
                 Text(
                   "Account",
-                  style: TextStyle(fontSize: 20, color: Colors.grey),
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
                 ),
               ],
             ),
@@ -67,7 +67,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                   children: [
                     Text(
                       "AAPL",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     SizedBox(width: 5),
                     Text("NASDAQ.NMS", style: TextStyle(color: Colors.grey)),
@@ -79,11 +79,11 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                       children: [
                         Text(
                           "232.95 x 100",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         Text(
                           "+0.17 +0.07%",
-                          style: TextStyle(color: Colors.green, fontSize: 20),
+                          style: TextStyle(color: Colors.green, fontSize: 18),
                         ),
                         Row(
                           children: [
@@ -99,15 +99,15 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                         children: [
                           Text(
                             "Ask",
-                            style: TextStyle(color: Colors.red, fontSize: 20),
+                            style: TextStyle(color: Colors.red, fontSize: 18),
                           ),
                           Text(
                             "Bid",
-                            style: TextStyle(color: Colors.blue, fontSize: 20),
+                            style: TextStyle(color: Colors.blue, fontSize: 18),
                           ),
                           Text(
                             "Spread",
-                            style: TextStyle(color: Colors.grey, fontSize: 20),
+                            style: TextStyle(color: Colors.grey, fontSize: 18),
                           ),
                         ],
                       ),
@@ -118,17 +118,17 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                         children: [
                           Text(
                             "300 x 233.02",
-                            style: TextStyle(color: Colors.red, fontSize: 20),
+                            style: TextStyle(color: Colors.red, fontSize: 18),
                           ),
                           Text(
                             "100 x 232.86",
-                            style: TextStyle(color: Colors.blue, fontSize: 20),
+                            style: TextStyle(color: Colors.blue, fontSize: 18),
                           ),
                           Text(
                             "0.16(0.069%)",
                             style: TextStyle(
                               color: Colors.grey.shade400,
-                              fontSize: 20,
+                              fontSize: 18,
                             ),
                           ),
                         ],
@@ -168,7 +168,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: 5),
                             Text(
                               "consolidate snapshot",
                               style: TextStyle(color: Colors.grey.shade300),
@@ -181,7 +181,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                               "As of 10:00:20 GMT+7",
                               style: TextStyle(color: Colors.grey),
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: 5),
                             Icon(Icons.timelapse, color: Colors.grey),
                           ],
                         ),
@@ -202,10 +202,10 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                 ),
               ),
               columnWidths: const {
-                0: FlexColumnWidth(2), // Column 1
-                1: FlexColumnWidth(2), // Column 2
-                2: FlexColumnWidth(1), // Column 3
-                3: IntrinsicColumnWidth(), // Column 4 (actions)
+                0: FlexColumnWidth(3),
+                1: FlexColumnWidth(2),
+                2: FlexColumnWidth(1.5),
+                3: FixedColumnWidth(40),
               },
               children: [
                 // First Row
@@ -218,7 +218,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                         children: const [
                           Text(
                             "Account",
-                            style: TextStyle(fontSize: 20, color: Colors.grey),
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
                           ),
                           Text("UserID", style: TextStyle(color: Colors.white)),
                         ],
@@ -231,7 +231,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                         children: const [
                           Text(
                             "Available",
-                            style: TextStyle(fontSize: 20, color: Colors.grey),
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
                           ),
                           Text("11.6k", style: TextStyle(color: Colors.white)),
                         ],
@@ -244,7 +244,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                         children: const [
                           Text(
                             "Position",
-                            style: TextStyle(fontSize: 20, color: Colors.grey),
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
                           ),
                           Text("40", style: TextStyle(color: Colors.white)),
                         ],
@@ -274,7 +274,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                         children: const [
                           Text(
                             "quantity",
-                            style: TextStyle(fontSize: 20, color: Colors.grey),
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
                           ),
                         ],
                       ),
@@ -286,7 +286,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                         children: const [
                           Text(
                             "100",
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                           Text("23.6k", style: TextStyle(color: Colors.white)),
                         ],
@@ -324,14 +324,14 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: const Text(
                         "Order type",
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: const Text(
                         "Limit",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
                     Padding(
@@ -358,7 +358,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                         children: const [
                           Text(
                             "limit price",
-                            style: TextStyle(fontSize: 20, color: Colors.grey),
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
                           ),
                         ],
                       ),
@@ -370,7 +370,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                         children: const [
                           Text(
                             "233.03",
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ],
                       ),
@@ -407,14 +407,14 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: const Text(
                         "Time in force",
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: const Text(
                         "Day",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
                     Padding(
@@ -438,7 +438,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: const Text(
                         "Display Size",
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
                     ),
                     Padding(
@@ -473,7 +473,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: const Text(
                         "Outside RTH",
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
                     ),
                     Padding(
@@ -575,7 +575,7 @@ class _BuyOrderPageState extends State<BuyOrderPage> {
                     "Buy",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

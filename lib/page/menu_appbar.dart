@@ -24,6 +24,7 @@ class MenuAppbar extends StatefulWidget {
 class _MenuAppbarState extends State<MenuAppbar> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -37,7 +38,6 @@ class _MenuAppbarState extends State<MenuAppbar> {
                 fillColor: Colors.white,
                 hintText: "Search...",
                 hintStyle: TextStyle(color: Colors.white),
-                //border: InputBorder.none,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
@@ -54,7 +54,7 @@ class _MenuAppbarState extends State<MenuAppbar> {
                     "SJI investment",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -62,21 +62,23 @@ class _MenuAppbarState extends State<MenuAppbar> {
               ),
             ),
       actions: [
+        // ใช้ Row แบบ紧凑มากขึ้น
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min, // 重要: ทำให้ Row มีขนาดเท่าที่จำเป็น
           children: [
             if (widget.showSearchIcon)
               _isSearching
-                  ? IconButton(
-                      icon: Icon(Icons.close, size: 30, color: Colors.white),
+                  ? _buildCompactIconButton(
+                      icon: Icons.close,
                       onPressed: () {
                         setState(() {
                           _isSearching = false;
                         });
                       },
                     )
-                  : IconButton(
-                      icon: Icon(Icons.search, size: 30, color: Colors.white),
+                  : _buildCompactIconButton(
+                      icon: Icons.search,
                       onPressed: () {
                         setState(() {
                           _isSearching = true;
@@ -85,47 +87,56 @@ class _MenuAppbarState extends State<MenuAppbar> {
                     ),
 
             if (widget.showEyeIcon)
-              IconButton(
-                icon: Icon(
-                  widget.obscure ? Icons.visibility_off : Icons.remove_red_eye,
-                  size: 30,
-                  color: Colors.white,
-                ),
+              _buildCompactIconButton(
+                icon: widget.obscure
+                    ? Icons.visibility_off
+                    : Icons.remove_red_eye,
                 onPressed: widget.onToggleObscure ?? () {},
               ),
 
             if (widget.showNotificationIcon)
-              Stack(
-                children: [
-                  Container(
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.notifications,
-                        size: 30,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                  Positioned(
-                    right: 10,
-                    top: 10,
-                    child: CircleAvatar(
-                      radius: 6,
-                      backgroundColor: Colors.red,
-                      child: Text(
-                        "12",
-                        style: TextStyle(color: Colors.white, fontSize: 8),
+              // ใช้ Container แทน Stack เพื่อลดความซับซ้อน
+              Container(
+                width: 40, // กำหนดความกว้างคงที่
+                height: 40, // กำหนดความสูงคงที่
+                child: Stack(
+                  clipBehavior:
+                      Clip.none, // อนุญาตให้ลูกศูนย์วางตำแหน่งนอกขอบเขต
+                  children: [
+                    Center(
+                      child: _buildCompactIconButton(
+                        icon: Icons.notifications,
+                        onPressed: () {},
                       ),
                     ),
-                  ),
-                ],
+                    Positioned(
+                      right: 8, // ปรับตำแหน่ง notification badge
+                      top: 8,
+                      child: Container(
+                        width: 16,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            "12",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
+
             if (widget.showMoreVertIcon)
-              IconButton(
-                icon: Icon(Icons.more_vert, size: 30, color: Colors.white),
-                onPressed: () {},
-              ),
+              _buildCompactIconButton(icon: Icons.more_vert, onPressed: () {}),
           ],
         ),
       ],
@@ -146,6 +157,22 @@ class _MenuAppbarState extends State<MenuAppbar> {
             Container(color: Colors.white, height: 1),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildCompactIconButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+  }) {
+    return Container(
+      width: 40, // กำหนดขนาดคงที่
+      height: 40,
+      child: IconButton(
+        icon: Icon(icon, size: 20, color: Colors.white),
+        padding: EdgeInsets.zero, // กำจัด padding
+        constraints: BoxConstraints(), // กำจัด constraints เริ่มต้น
+        onPressed: onPressed,
       ),
     );
   }

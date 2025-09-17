@@ -107,75 +107,92 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               Center(child: StockChart()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.orangeAccent, width: 2),
-                    ),
-                    child: Icon(
-                      LucideIcons.plus,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5,
-                    ),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(color: Colors.orangeAccent, width: 2),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(LucideIcons.search, color: Colors.white, size: 20),
-                        SizedBox(width: 10),
-                        Text(
-                          "PortfolioAnalyst",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 30,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.orangeAccent,
+                          width: 2,
                         ),
-                      ],
+                      ),
+                      child: Icon(
+                        LucideIcons
+                            .plus, // เปลี่ยนจาก LucideIcons.plus เป็น Icons.add
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5,
-                    ),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(color: Colors.orangeAccent, width: 2),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.history, color: Colors.white, size: 20),
-                        SizedBox(width: 10),
-                        Text(
-                          "Transactions",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                    SizedBox(width: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                          color: Colors.orangeAccent,
+                          width: 2,
                         ),
-                      ],
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            LucideIcons.search,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "PortfolioAnalyst",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(width: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                          color: Colors.orangeAccent,
+                          width: 2,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.history, color: Colors.white, size: 20),
+                          SizedBox(width: 10),
+                          Text(
+                            "Transactions",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 50),
               // Container(

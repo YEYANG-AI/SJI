@@ -107,42 +107,48 @@ class _BoardViewState extends State<BoardView> {
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(tabTitles.length, (index) {
-              final isSelected = selectedTab == index;
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: isSelected
-                        ? Colors.orange.shade800
-                        : Colors.transparent,
-                    foregroundColor: isSelected
-                        ? Colors.white
-                        : Colors.orange.shade800,
-                    side: BorderSide(color: Colors.orange, width: 1.5),
-                    shape: const StadiumBorder(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 8,
+          // ทางเลือกที่กะทัดรัดกว่า
+          // แก้ไขส่วนของ Row ที่สร้าง Tab buttons
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(tabTitles.length, (index) {
+                final isSelected = selectedTab == index;
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: isSelected
+                          ? Colors.orange.shade800
+                          : Colors.transparent,
+                      foregroundColor: isSelected
+                          ? Colors.white
+                          : Colors.orange.shade800,
+                      side: BorderSide(color: Colors.orange, width: 1.5),
+                      shape: const StadiumBorder(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12, // ลด horizontal padding
+                        vertical: 6, // ลด vertical padding
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        selectedTab = index;
+                      });
+                    },
+                    child: Text(
+                      tabTitles[index],
+                      style: TextStyle(
+                        color: isSelected ? Colors.white : Colors.orange,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12, // ลดขนาดฟอนต์
+                      ),
                     ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      selectedTab = index;
-                    });
-                  },
-                  child: Text(
-                    tabTitles[index],
-                    style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.orange,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              );
-            }),
+                );
+              }),
+            ),
           ),
           const SizedBox(height: 10),
           SizedBox(

@@ -1,4 +1,6 @@
+import 'package:bitkub/page/auth/pinSet.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({super.key});
@@ -8,6 +10,24 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  // เพิ่มฟังก์ชันสำหรับเช็ค registration status
+  Future<void> _checkRegistrationAndNavigate() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isRegistered = prefs.getBool('isRegistered') ?? false;
+
+    if (!mounted) return; // ป้องกัน memory leak
+
+    if (isRegistered) {
+      // ถ้าลงทะเบียนแล้วให้ไปหน้า setupPin
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PinScreen(isLogin: true)),
+      );
+    } else {
+      Navigator.pushNamed(context, '/login');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,37 +95,12 @@ class _HomeWidgetState extends State<HomeWidget> {
             SizedBox(
               child: Column(
                 children: [
-                  Container(
-                    //margin: EdgeInsets.symmetric(horizontal: 20),
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Colors.black, Colors.orange.shade800],
-                        stops: [0.15, 1],
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Sign up',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
+                  // ปุ่ม Sign up ให้ไปหน้า register
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.pushNamed(context, '/register');
                     },
                     child: Container(
-                      //margin: EdgeInsets.symmetric(horizontal: 20),
                       height: 50,
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -119,7 +114,35 @@ class _HomeWidgetState extends State<HomeWidget> {
                       ),
                       child: Center(
                         child: Text(
-                          'I have an account',
+                          'Sign up',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  // ปุ่ม Login เช็ค localStorage ก่อน
+                  GestureDetector(
+                    onTap: _checkRegistrationAndNavigate,
+                    child: Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Colors.black, Colors.orange.shade800],
+                          stops: [0.15, 1],
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Sign In',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
