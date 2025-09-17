@@ -2,7 +2,10 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static Future<void> saveUserCredentials(String username, String password) async {
+  static Future<void> saveUserCredentials(
+    String username,
+    String password,
+  ) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isRegistered', true);
     await prefs.setString('username', username);
