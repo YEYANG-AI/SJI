@@ -404,8 +404,8 @@ class _WatchListState extends State<WatchList> {
                   childAspectRatio: 3,
                   shrinkWrap: true,
                   crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 2,
+                  mainAxisSpacing: 2,
                   children: headers.map((item) {
                     return InkWell(
                       onTap: () {
@@ -425,8 +425,8 @@ class _WatchListState extends State<WatchList> {
                         child: Row(
                           children: [
                             Container(
-                              height: 60,
-                              width: 60,
+                              height: 40,
+                              width: 40,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
@@ -442,27 +442,27 @@ class _WatchListState extends State<WatchList> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
-                                  width: 100,
                                   child: Text(
                                     item['name'],
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                                      fontSize: 18,
                                     ),
                                     maxLines: 1,
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 100,
                                   child: Text(
                                     item['discription'],
-                                    style: TextStyle(color: Colors.white70),
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 10,
+                                    ),
                                     maxLines: 1,
                                   ),
                                 ),

@@ -1,3 +1,9 @@
+// lib/page/auth/login/login_page.dart
+import 'package:bitkub/page/auth/pinSet.dart';
+import 'package:bitkub/page/auth/widget/login/AuthService.dart';
+import 'package:bitkub/page/auth/widget/login/LoginButton.dart';
+import 'package:bitkub/page/auth/widget/login/LoginForm.dart';
+import 'package:bitkub/page/auth/widget/login/LoginHeader.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,254 +14,136 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool eye = true;
-  final username = TextEditingController();
-  final password = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FocusNode _usernameFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _usernameFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onLoginSuccess() async {
+    await AuthService.saveUserCredentials(
+      _usernameController.text,
+      _passwordController.text,
+    );
+
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const PinScreen()),
+      );
+    }
+  }
+
+  void _dismissKeyboardAndFocus() {
+    FocusScope.of(context).unfocus();
+  }
+
+  void _handleLogin() {
+    if (_formKey.currentState!.validate()) {
+      _onLoginSuccess();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.keyboard_arrow_left, size: 30, color: Colors.white),
+    return GestureDetector(
+      onTap: _dismissKeyboardAndFocus,
+      behavior: HitTestBehavior.opaque,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.keyboard_arrow_left,
+              size: 30,
+              color: Colors.white,
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.more_vert, color: Colors.white, size: 30),
+              onPressed: () {},
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert, color: Colors.white, size: 30),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: Form(
-        key: formKey,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.black, Colors.orange.shade800.withOpacity(0.8)],
-              stops: [0.15, 1],
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 100),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 200,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(100),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.white.withOpacity(0.5),
-                        spreadRadius: 4,
-                        blurRadius: 16,
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.asset("assets/images/sji_logo.jpeg"),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Center(
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        child: Text(
-                          "SJI Investment Cooperations",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 16 : 0,
+              ),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Form(
+                    key: _formKey,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.center,
+                          end: Alignment.centerRight,
+                          colors: [Colors.black, Colors.orange.shade800],
+                          stops: const [0.8, 1],
                         ),
                       ),
-                      Positioned(
-                        top: 14,
-                        right: 0,
-                        left: 0,
-                        bottom: 10,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white.withOpacity(0.2),
-                                spreadRadius: 6,
-                                blurRadius: 10,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const LoginHeader(),
+
+                          LoginForm(
+                            formKey: _formKey,
+                            usernameController: _usernameController,
+                            passwordController: _passwordController,
+                            usernameFocusNode: _usernameFocusNode,
+                            passwordFocusNode: _passwordFocusNode,
+                          ),
+
+                          // Forgot Password Link
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () {},
+                                child: Text(
+                                  'Forgot Password?',
+                                  style: TextStyle(
+                                    color: Colors.orange.shade300,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: TextFormField(
-                    controller: username,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter Username';
-                      }
-                      return null;
-                    },
-                    cursorColor: Colors.white,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(
-                        color: Colors.white,
-                        backgroundColor: Colors.red,
-                      ),
-                      hintText: 'Username',
-                      hintStyle: TextStyle(color: Colors.white),
-                      prefixIcon: Container(
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(50),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withOpacity(0.5),
-                              spreadRadius: 4,
-                              blurRadius: 6,
                             ),
-                          ],
-                        ),
-
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.black,
-                          size: 26,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      fillColor: Colors.white.withOpacity(0.25),
-                      filled: true,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: TextFormField(
-                    obscureText: eye,
-                    controller: password,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter password';
-                      } else if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
-                      }
-                      return null;
-                    },
-                    cursorColor: Colors.white,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(
-                        color: Colors.white,
-                        backgroundColor: Colors.red,
-                      ),
-                      prefixIcon: Container(
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(50),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white.withOpacity(0.5),
-                              spreadRadius: 4,
-                              blurRadius: 6,
-                            ),
-                          ],
-                        ),
-
-                        child: Icon(Icons.lock, color: Colors.black, size: 20),
-                      ),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            eye = !eye;
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                              ),
-                            ],
                           ),
-                          child: eye
-                              ? Icon(Icons.remove_red_eye, color: Colors.black)
-                              : Icon(Icons.visibility_off, color: Colors.black),
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      hintText: 'Password',
-                      hintStyle: TextStyle(color: Colors.white),
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      fillColor: Colors.white.withOpacity(0.25),
-                      filled: true,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 80),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        print("Username:${username.text}");
-                        print("Password:${password.text}");
-                        Navigator.pushReplacementNamed(context, '/bottomBar');
-                      }
-                    },
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Center(
-                        child: Text("Login", style: TextStyle(fontSize: 20)),
+
+                          LoginButton(
+                            onPressed: _handleLogin,
+                            onRegisterPressed: () {
+                              Navigator.pushNamed(context, '/register');
+                            },
+                          ),
+
+                          const SizedBox(height: 60),
+                        ],
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

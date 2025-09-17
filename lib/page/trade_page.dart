@@ -619,25 +619,60 @@ class _TradePageState extends State<TradePage> {
                         ],
                       ),
                       SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BuyOrderPage(),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BuyOrderPage(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(right: 10),
+                                height: 70,
+                                width: 140,
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: Colors.grey.shade700,
+                                  ),
                                 ),
-                              );
-                            },
-                            child: Container(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Buy Order',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Icon(
+                                      LucideIcons.plusCircle,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
                               margin: EdgeInsets.only(right: 10),
                               height: 70,
-                              width: 190,
+                              width: 140,
                               padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: Colors.red,
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(color: Colors.grey.shade700),
                               ),
@@ -646,52 +681,23 @@ class _TradePageState extends State<TradePage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Buy Order',
+                                    'Sell Order',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
                                   ),
                                   Icon(
-                                    LucideIcons.plusCircle,
+                                    LucideIcons.minusCircle,
                                     color: Colors.white,
-                                    size: 30,
+                                    size: 20,
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(right: 10),
-                            height: 70,
-                            width: 190,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.grey.shade700),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Sell Order',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                Icon(
-                                  LucideIcons.minusCircle,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),

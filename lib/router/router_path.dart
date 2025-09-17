@@ -1,4 +1,6 @@
 import 'package:bitkub/page/auth/login_page.dart';
+import 'package:bitkub/page/auth/pinSet.dart';
+import 'package:bitkub/page/auth/Register.dart';
 import 'package:bitkub/page/auth/widget/home_widget.dart';
 import 'package:bitkub/page/home_page.dart';
 import 'package:bitkub/page/widget/analysis_widget.dart';
@@ -12,6 +14,7 @@ class RouterPath {
   static const String home = '/home';
   static const String subHome = '/subHome';
   static const String analysis = '/analysis';
+  static const String setupPin = '/setupPin';
 
   static MaterialPageRoute generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -25,6 +28,10 @@ class RouterPath {
         return MaterialPageRoute(builder: (_) => HomeWidget());
       case analysis:
         return MaterialPageRoute(builder: (_) => AnalysisWidget());
+      case register:
+        return MaterialPageRoute(builder: (_) => Register());
+      case setupPin:
+        return MaterialPageRoute(builder: (_) => PinScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

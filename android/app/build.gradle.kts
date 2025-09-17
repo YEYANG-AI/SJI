@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "com.example.bitkub"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Use explicit NDK recommended by local_auth / flutter_plugin_android_lifecycle
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
