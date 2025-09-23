@@ -12,6 +12,7 @@ class PinScreenBody extends StatelessWidget {
   final Function(String) onNumberPressed;
   final VoidCallback onDeletePressed;
   final VoidCallback onBiometricPressed;
+  final bool showBiometricButton; // เพิ่ม parameter นี้
 
   const PinScreenBody({
     super.key,
@@ -24,6 +25,7 @@ class PinScreenBody extends StatelessWidget {
     required this.onNumberPressed,
     required this.onDeletePressed,
     required this.onBiometricPressed,
+    this.showBiometricButton = false, // เพิ่ม default value
   });
 
   @override
@@ -31,65 +33,36 @@ class PinScreenBody extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.center,
-          end: Alignment.centerRight,
-          colors: [Colors.black, Colors.orange.shade800],
-          stops: const [0.8, 1],
-        ),
-      ),
+      color: Colors.transparent,
       child: SafeArea(
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.top -
-                  MediaQuery.of(context).padding.bottom,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                PinInputDisplay(
-                  isLogin: isLogin,
-                  isConfirming: isConfirming,
-                  currentPin: currentPin,
-                ),
-                NumberKeypad(
-                  isLogin: isLogin,
-                  isAuthenticating: isAuthenticating,
-                  hasNavigated: hasNavigated,
-                  onNumberPressed: onNumberPressed,
-                  onDeletePressed: onDeletePressed,
-                  onBiometricPressed: onBiometricPressed,
-                ),
-                PinScreenLoadingIndicator(isLoading: isLoading),
-              ],
-            ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight:
+                MediaQuery.of(context).size.height -
+                MediaQuery.of(context).padding.top -
+                MediaQuery.of(context).padding.bottom,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              PinInputDisplay(
+                isLogin: isLogin,
+                isConfirming: isConfirming,
+                currentPin: currentPin,
+              ),
+              NumberKeypad(
+                isLogin: isLogin,
+                isAuthenticating: isAuthenticating,
+                hasNavigated: hasNavigated,
+                onNumberPressed: onNumberPressed,
+                onDeletePressed: onDeletePressed,
+                onBiometricPressed: onBiometricPressed,
+                showBiometricButton: showBiometricButton, // ส่ง parameter ต่อไปยัง NumberKeypad
+              ),
+            ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class PinScreenLoadingIndicator extends StatelessWidget {
-  final bool isLoading;
-
-  const PinScreenLoadingIndicator({
-    super.key,
-    required this.isLoading,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: isLoading
-          ? CircularProgressIndicator(
-              color: Colors.orange.shade300,
-            )
-          : const SizedBox(height: 10),
     );
   }
 }

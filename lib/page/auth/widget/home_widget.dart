@@ -1,4 +1,5 @@
 import 'package:bitkub/page/auth/pinSet.dart';
+import 'package:bitkub/widget/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,141 +32,217 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: SizedBox(),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert, color: Colors.white, size: 30),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      backgroundColor: AppColors.transparent,
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.center,
-            end: Alignment.centerRight,
-            colors: [Colors.black, Colors.orange.shade800],
-            stops: [0.8, 1],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [AppColors.primaryColor, AppColors.secondColor],
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
           children: [
-            SizedBox(height: 0),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: SizedBox(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 200,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(100),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.5),
-                            spreadRadius: 4,
-                            blurRadius: 16,
+            // Main content
+            Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            width: 200,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.deepPurpleAccent,
+                                width: 4,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.asset(
+                                "assets/images/sji_logo.jpeg",
+                                width: 160,
+                                height: 160,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.asset("assets/images/sji_logo.jpeg"),
+                      SizedBox(height: 40),
+                      Text(
+                        "SJI INVESTMENT",
+                        style: TextStyle(
+                          color: AppColors.textColor,
+                          fontSize: 32,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 2.5,
+                          shadows: [
+                            Shadow(
+                              color: AppColors.blackTextColor.withOpacity(0.2),
+                              blurRadius: 4,
+                              offset: Offset(1, 1),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "SJI Investment Cooperation",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                      SizedBox(height: 15),
+                      Text(
+                        "The Big Data For You Win",
+                        style: TextStyle(
+                          color: AppColors.textColor.withOpacity(0.9),
+                          fontSize: 16,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 30),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(
-              child: Column(
-                children: [
-                  // ปุ่ม Sign up ให้ไปหน้า register
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/register');
-                    },
-                    child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [Colors.black, Colors.orange.shade800],
-                          stops: [0.15, 1],
+
+                // Bottom buttons section
+                Container(
+                  padding: EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      // SIGN IN button
+                      Container(
+                        width: double.infinity,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: AppColors.textColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 15,
+                              offset: Offset(0, 6),
+                              spreadRadius: 1,
+                            ),
+                          ],
                         ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Sign up',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        child: Material(
+                          color: AppColors.transparent,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(15),
+                            onTap: _checkRegistrationAndNavigate,
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'SIGN IN',
+                                    style: TextStyle(
+                                      color: AppColors.blackTextColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  // ปุ่ม Login เช็ค localStorage ก่อน
-                  GestureDetector(
-                    onTap: _checkRegistrationAndNavigate,
-                    child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [Colors.black, Colors.orange.shade800],
-                          stops: [0.15, 1],
+                      SizedBox(height: 20),
+
+                      // SIGN UP button
+                      Container(
+                        width: double.infinity,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: AppColors.transparent,
+                          border: Border.all(
+                            color: AppColors.textColor,
+                            width: 2,
+                          ),
                         ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Sign In',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(15),
+                            onTap: () {
+                              Navigator.pushNamed(context, '/register');
+                            },
+                            child: Center(
+                              child: Text(
+                                'SIGN UP',
+                                style: TextStyle(
+                                  color: AppColors.textColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    child: Text(
-                      "Contact us",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+
+                      SizedBox(height: 40),
+
+                      // Contact section
+                      Text(
+                        "Need help? Contact our support team",
+                        style: TextStyle(
+                          color: AppColors.textColor.withOpacity(0.8),
+                          fontSize: 14,
+                          letterSpacing: 0.5,
+                        ),
                       ),
-                    ),
+                      SizedBox(height: 15),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.email,
+                            color: AppColors.textColor,
+                            size: 18,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "sji_investment@gmail.com",
+                            style: TextStyle(
+                              color: AppColors.textColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.phone,
+                            color: AppColors.textColor,
+                            size: 18,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "+856 20 9659 6959",
+                            style: TextStyle(
+                              color: AppColors.textColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:bitkub/widget/AppColors.dart';
 import 'package:flutter/material.dart';
 
 class NumberKeypad extends StatelessWidget {
@@ -7,6 +8,7 @@ class NumberKeypad extends StatelessWidget {
   final Function(String) onNumberPressed;
   final VoidCallback onDeletePressed;
   final VoidCallback onBiometricPressed;
+  final bool showBiometricButton; // เพิ่ม parameter นี้
 
   const NumberKeypad({
     super.key,
@@ -16,20 +18,21 @@ class NumberKeypad extends StatelessWidget {
     required this.onNumberPressed,
     required this.onDeletePressed,
     required this.onBiometricPressed,
+    this.showBiometricButton = false, // เพิ่ม default value
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       child: Column(
         children: [
           _buildNumberRow(['1', '2', '3']),
-          SizedBox(height: 15),
+          SizedBox(height: 20),
           _buildNumberRow(['4', '5', '6']),
-          SizedBox(height: 15),
+          SizedBox(height: 20),
           _buildNumberRow(['7', '8', '9']),
-          SizedBox(height: 15),
+          SizedBox(height: 20),
           _buildBottomRow(),
         ],
       ),
@@ -47,7 +50,8 @@ class NumberKeypad extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        isLogin ? _buildBiometricButton() : SizedBox(width: 70),
+        // เปลี่ยนจาก isLogin เป็น showBiometricButton
+        showBiometricButton ? _buildBiometricButton() : SizedBox(width: 80),
         _buildNumberButton('0'),
         _buildDeleteButton(),
       ],
@@ -58,20 +62,23 @@ class NumberKeypad extends StatelessWidget {
     return GestureDetector(
       onTap: () => onNumberPressed(number),
       child: Container(
-        width: 65,
-        height: 65,
+        width: 80,
+        height: 80,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: Colors.white54, width: 1.5),
-          color: Colors.transparent,
+          border: Border.all(
+            color: AppColors.buttonTextColor.withOpacity(0.7),
+            width: 2,
+          ),
+          // color: Colors.white.withOpacity(0.1),
         ),
         child: Center(
           child: Text(
             number,
             style: TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.w500,
+              color: AppColors.buttonTextColor,
+              fontSize: 40,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
@@ -83,15 +90,22 @@ class NumberKeypad extends StatelessWidget {
     return GestureDetector(
       onTap: onDeletePressed,
       child: Container(
-        width: 65,
-        height: 65,
+        width: 80,
+        height: 80,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: Colors.white54, width: 1.5),
-          color: Colors.transparent,
+          border: Border.all(
+            color: AppColors.buttonTextColor.withOpacity(0.7),
+            width: 2,
+          ),
+          // color: Colors.white.withOpacity(0.1),
         ),
         child: Center(
-          child: Icon(Icons.backspace_outlined, color: Colors.white, size: 22),
+          child: Icon(
+            Icons.backspace_outlined,
+            color: AppColors.buttonTextColor,
+            size: 35,
+          ),
         ),
       ),
     );
@@ -100,21 +114,27 @@ class NumberKeypad extends StatelessWidget {
   Widget _buildBiometricButton() {
     return GestureDetector(
       onTap: () {
-        // ตรวจสอบสถานะก่อนเรียก
         if (!isAuthenticating && !hasNavigated) {
           onBiometricPressed();
         }
       },
       child: Container(
-        width: 65,
-        height: 65,
+        width: 80,
+        height: 80,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: Colors.white54, width: 1.5),
-          color: Colors.transparent,
+          border: Border.all(
+            color: AppColors.buttonTextColor.withOpacity(0.7),
+            width: 2,
+          ),
+          // color: Colors.white.withOpacity(0.1),
         ),
         child: Center(
-          child: Icon(Icons.fingerprint, color: Colors.white, size: 28),
+          child: Icon(
+            Icons.fingerprint,
+            color: AppColors.buttonTextColor,
+            size: 50,
+          ),
         ),
       ),
     );

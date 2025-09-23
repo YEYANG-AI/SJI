@@ -27,33 +27,58 @@ class _BottomViewState extends State<BottomView> {
   ];
 
   int selectedIndex = 0;
+  DateTime? currentBackPressTime;
+
+  Future<bool> _onWillPop() async {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Center(child: Text('Slide again to exit')),
+          duration: Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(bottom: 20),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      );
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: selectedIndex,
-        children: data.map((item) => item['page'] as Widget).toList(),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.black,
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        currentIndex: selectedIndex,
-        onTap: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        items: data.map((item) {
-          return BottomNavigationBarItem(
-            icon: Icon(item['icon'], size: 20),
-            activeIcon: Icon(item['icon'], size: 25),
-            label: item['name'],
-          );
-        }).toList(),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: IndexedStack(
+          index: selectedIndex,
+          children: data.map((item) => item['page'] as Widget).toList(),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.black,
+          selectedItemColor: Colors.orange,
+          unselectedItemColor: Colors.grey,
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+          currentIndex: selectedIndex,
+          onTap: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+          items: data.map((item) {
+            return BottomNavigationBarItem(
+              icon: Icon(item['icon'], size: 20),
+              activeIcon: Icon(item['icon'], size: 25),
+              label: item['name'],
+            );
+          }).toList(),
+        ),
       ),
     );
   }
