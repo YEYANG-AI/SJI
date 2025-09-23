@@ -1,4 +1,5 @@
 // lib/page/auth/login/login_header.dart
+import 'package:bitkub/widget/AppColors.dart';
 import 'package:flutter/material.dart';
 
 class LoginHeader extends StatelessWidget {
@@ -14,11 +15,11 @@ class LoginHeader extends StatelessWidget {
           height: 150,
           width: 150,
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
+            color: AppColors.borderColor,
             borderRadius: BorderRadius.circular(75),
             boxShadow: [
               BoxShadow(
-                color: Colors.white.withOpacity(0.5),
+                color: AppColors.textColor.withOpacity(0.5),
                 spreadRadius: 4,
                 blurRadius: 16,
               ),
@@ -35,7 +36,7 @@ class LoginHeader extends StatelessWidget {
           child: Text(
             "SJI Investment Cooperation",
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.textColor,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),

@@ -1,3 +1,4 @@
+import 'package:bitkub/widget/AppColors.dart';
 import 'package:flutter/material.dart';
 
 class PinInputDisplay extends StatelessWidget {
@@ -20,7 +21,7 @@ class PinInputDisplay extends StatelessWidget {
         Text(
           _getTitle(),
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.textColor,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
@@ -28,7 +29,7 @@ class PinInputDisplay extends StatelessWidget {
         SizedBox(height: 10),
         Text(
           _getSubtitle(),
-          style: TextStyle(color: Colors.white70, fontSize: 16),
+          style: TextStyle(color: AppColors.secTextColor, fontSize: 16),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 40),
@@ -51,12 +52,12 @@ class PinInputDisplay extends StatelessWidget {
   String _getSubtitle() {
     if (isLogin) {
       return isConfirming
-          ? 'Confirm PIN 6 Digits'
-          : 'Fill PIN 6 Digits for Login';
+          ? 'Confirm PIN 4 Digits'
+          : 'Fill PIN 4 Digits for Login';
     } else {
       return isConfirming
-          ? 'Confirm PIN 6 Digits'
-          : 'Setup PIN 6 Digits for Security';
+          ? 'Confirm PIN 4 Digits'
+          : 'Setup PIN 4 Digits for Security';
     }
   }
 
@@ -65,21 +66,17 @@ class PinInputDisplay extends StatelessWidget {
       width: 80,
       height: 80,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white54, width: 2),
+        border: Border.all(color: AppColors.textColor, width: 2),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Icon(
-        Icons.lock_outline,
-        size: 40,
-        color: Colors.white,
-      ),
+      child: Icon(Icons.lock_outline, size: 40, color: AppColors.textColor),
     );
   }
 
   Widget _buildPinDots() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(6, (index) {
+      children: List.generate(4, (index) {
         return Container(
           margin: EdgeInsets.symmetric(horizontal: 8),
           width: 20,
@@ -88,12 +85,12 @@ class PinInputDisplay extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(
               color: index < currentPin.length
-                  ? Colors.orange.shade300
-                  : Colors.white54,
+                  ? AppColors.textColor
+                  : AppColors.secTextColor,
               width: 2,
             ),
             color: index < currentPin.length
-                ? Colors.orange.shade300
+                ? AppColors.textColor
                 : Colors.transparent,
           ),
         );

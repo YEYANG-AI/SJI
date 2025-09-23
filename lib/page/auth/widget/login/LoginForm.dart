@@ -1,4 +1,4 @@
-// lib/page/auth/login/login_form.dart
+import 'package:bitkub/widget/AppColors.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatefulWidget {
@@ -27,84 +27,101 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       child: Column(
         children: [
-          TextFormField(
-            focusNode: widget.usernameFocusNode,
-            controller: widget.usernameController,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter Username';
-              }
-              return null;
-            },
-            style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              labelText: 'Username',
-              labelStyle: const TextStyle(color: Colors.white70),
-              prefixIcon: const Icon(Icons.person, color: Colors.white70),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Colors.white54),
+          // Username Field
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: AppColors.textColor.withOpacity(0.3),
+                width: 1.5,
               ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Colors.white54),
+            ),
+            child: TextFormField(
+              focusNode: widget.usernameFocusNode,
+              controller: widget.usernameController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter Username';
+                }
+                return null;
+              },
+              style: TextStyle(color: AppColors.textColor, fontSize: 16),
+              decoration: InputDecoration(
+                labelText: 'Username',
+                labelStyle: TextStyle(
+                  color: AppColors.textColor.withOpacity(0.8),
+                ),
+                prefixIcon: Icon(
+                  Icons.person,
+                  color: AppColors.textColor.withOpacity(0.8),
+                ),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 18,
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Colors.orange),
-              ),
-              filled: true,
-              fillColor: Colors.black.withOpacity(0.3),
             ),
           ),
-          const SizedBox(height: 15),
-          TextFormField(
-            focusNode: widget.passwordFocusNode,
-            controller: widget.passwordController,
-            obscureText: _obscureText,
-            style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              labelText: 'Password',
-              labelStyle: const TextStyle(color: Colors.white70),
-              prefixIcon: const Icon(Icons.lock, color: Colors.white70),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscureText ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.white70,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscureText = !_obscureText;
-                  });
-                },
+          SizedBox(height: 20),
+
+          // Password Field
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: AppColors.textColor.withOpacity(0.3),
+                width: 1.5,
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Colors.white54),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Colors.white54),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Colors.orange),
-              ),
-              filled: true,
-              fillColor: Colors.black.withOpacity(0.3),
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter password';
-              }
-              if (value.length < 6) {
-                return 'Password must be at least 6 characters';
-              }
-              return null;
-            },
+            child: TextFormField(
+              focusNode: widget.passwordFocusNode,
+              controller: widget.passwordController,
+              obscureText: _obscureText,
+              style: TextStyle(color: AppColors.textColor, fontSize: 16),
+              decoration: InputDecoration(
+                labelText: 'Password',
+                labelStyle: TextStyle(
+                  color: AppColors.textColor.withOpacity(0.8),
+                ),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: AppColors.textColor.withOpacity(0.8),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                    color: AppColors.textColor.withOpacity(0.8),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                ),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 18,
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter password';
+                }
+                if (value.length < 6) {
+                  return 'Password must be at least 6 characters';
+                }
+                return null;
+              },
+            ),
           ),
         ],
       ),

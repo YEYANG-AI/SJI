@@ -12,7 +12,7 @@ class RouterPath {
   static const String register = '/register';
   static const String bottomBar = '/bottomBar';
   static const String home = '/home';
-  static const String subHome = '/subHome';
+  static const String subHome = '/';
   static const String analysis = '/analysis';
   static const String setupPin = '/setupPin';
 

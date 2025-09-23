@@ -81,24 +81,24 @@ class PinScreenController extends ChangeNotifier {
   }
 
   void _handleLoginInput(String number) {
-    if (_pin.length < 6) {
+    if (_pin.length < 4) {
       _pin += number;
       notifyListeners();
     }
   }
 
   void _handleConfirmInput(String number) {
-    if (_confirmPin.length < 6) {
+    if (_confirmPin.length < 4) {
       _confirmPin += number;
       notifyListeners();
     }
   }
 
   void _handleSetupInput(String number) {
-    if (_pin.length < 6) {
+    if (_pin.length < 4) {
       _pin += number;
       notifyListeners();
-      if (_pin.length == 6) {
+      if (_pin.length == 4) {
         moveToConfirmation();
       }
     }

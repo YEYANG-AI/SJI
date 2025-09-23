@@ -2,7 +2,10 @@ import 'package:bitkub/page/auth/widget/PIN/BiometricService.dart';
 import 'package:bitkub/page/auth/widget/PIN/pinScreenAppbar.dart';
 import 'package:bitkub/page/auth/widget/PIN/pinScreenBody.dart';
 import 'package:bitkub/page/auth/widget/PIN/pinService.dart';
+import 'package:bitkub/view/bottom_view.dart';
+import 'package:bitkub/widget/AppColors.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PinScreen extends StatefulWidget {
   final bool isLogin;
@@ -22,9 +25,11 @@ class _PinScreenState extends State<PinScreen> {
   bool _hasNavigated = false;
   bool _isLogin = false;
   bool _isPinVerified = false;
+  bool _biometricEnabledInSettings = false;
 
   late final PinService _pinService;
   late final BiometricService _biometricService;
+  final String _biometricKey = 'biometric_enabled';
 
   @override
   void initState() {
@@ -32,6 +37,7 @@ class _PinScreenState extends State<PinScreen> {
     _isLogin = widget.isLogin;
     _pinService = PinService();
     _biometricService = BiometricService();
+    _loadBiometricSetting();
   }
 
   @override
@@ -45,6 +51,19 @@ class _PinScreenState extends State<PinScreen> {
     _isAuthenticating = false;
     _hasNavigated = true;
     super.dispose();
+  }
+
+  // โหลดการตั้งค่า Biometric จาก SharedPreferences
+  Future<void> _loadBiometricSetting() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      setState(() {
+        _biometricEnabledInSettings = prefs.getBool(_biometricKey) ?? false;
+      });
+      debugPrint('Biometric enabled in settings: $_biometricEnabledInSettings');
+    } catch (e) {
+      debugPrint('Error loading biometric setting: $e');
+    }
   }
 
   void _handleRouteArguments() {
@@ -110,7 +129,11 @@ class _PinScreenState extends State<PinScreen> {
       _isAuthenticating = false;
     });
 
-    Navigator.pushReplacementNamed(context, '/bottomBar');
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => BottomView()),
+      (Route<dynamic> route) => false,
+    );
   }
 
   void _onNumberPressed(String number) {
@@ -126,33 +149,33 @@ class _PinScreenState extends State<PinScreen> {
   }
 
   void _handleLoginInput(String number) {
-    if (_pin.length < 6) {
+    if (_pin.length < 4) {
       setState(() {
         _pin += number;
       });
-      if (_pin.length == 6) {
+      if (_pin.length == 4) {
         _validateLoginPin();
       }
     }
   }
 
   void _handleConfirmInput(String number) {
-    if (_confirmPin.length < 6) {
+    if (_confirmPin.length < 4) {
       setState(() {
         _confirmPin += number;
       });
-      if (_confirmPin.length == 6) {
+      if (_confirmPin.length == 4) {
         _validateAndSavePin();
       }
     }
   }
 
   void _handleSetupInput(String number) {
-    if (_pin.length < 6) {
+    if (_pin.length < 4) {
       setState(() {
         _pin += number;
       });
-      if (_pin.length == 6) {
+      if (_pin.length == 4) {
         _moveToConfirmation();
       }
     }
@@ -194,21 +217,44 @@ class _PinScreenState extends State<PinScreen> {
 
       if (mounted && !_hasNavigated) {
         if (isValid) {
-          // PIN ถูกต้อง → เริ่ม Biometric
           setState(() {
-            _isAuthenticating = true;
+            _isPinVerified = true;
           });
-          final biometricSuccess = await _biometricService.authenticate(
-            context: context,
-            onAuthSuccess: _onAuthSuccess,
-          );
 
-          if (!biometricSuccess) {
-            _showErrorMessage('Biometric Authentication Failed');
-            setState(() {
-              _isAuthenticating = false;
-              _pin = '';
-            });
+          // ตรวจสอบว่า Biometric เปิดในการตั้งค่าหรือไม่
+          if (_biometricEnabledInSettings) {
+            // ถ้าเปิดใน Settings ให้ตรวจสอบว่าอุปกรณ์รองรับหรือไม่
+            final deviceSupported = await _biometricService.isDeviceSupported();
+            final canCheck = await _biometricService.canCheckBiometrics();
+            final hasBiometrics = await _biometricService.hasBiometrics();
+
+            if (deviceSupported && canCheck && hasBiometrics) {
+              // เริ่มใช้ Biometric Authentication
+              setState(() {
+                _isAuthenticating = true;
+              });
+              
+              final biometricSuccess = await _biometricService.authenticate(
+                context: context,
+                onAuthSuccess: _onAuthSuccess,
+              );
+
+              if (!biometricSuccess && mounted && !_hasNavigated) {
+                _showErrorMessage('Biometric Authentication Failed');
+                setState(() {
+                  _isAuthenticating = false;
+                  _pin = '';
+                });
+              }
+            } else {
+              // อุปกรณ์ไม่รองรับ Biometric แต่เปิดใน Settings
+              debugPrint('Biometric not supported on device, proceeding without biometric');
+              _onAuthSuccess(); // เข้าแอพเลย
+            }
+          } else {
+            // Biometric ไม่ได้เปิดใน Settings → เข้าแอพเลย
+            debugPrint('Biometric disabled in settings, proceeding without biometric');
+            _onAuthSuccess();
           }
         } else {
           _showErrorMessage('PIN is Incorrect');
@@ -245,7 +291,11 @@ class _PinScreenState extends State<PinScreen> {
           setState(() {
             _hasNavigated = true;
           });
-          Navigator.pushReplacementNamed(context, '/bottomBar');
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => BottomView()),
+            (Route<dynamic> route) => false,
+          );
         }
       } catch (e) {
         if (mounted && !_hasNavigated) {
@@ -281,18 +331,33 @@ class _PinScreenState extends State<PinScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: PinScreenAppBar(),
-      body: PinScreenBody(
-        isLogin: _isLogin,
-        isConfirming: _isConfirming,
-        isAuthenticating: _isAuthenticating,
-        hasNavigated: _hasNavigated,
-        isLoading: _isLoading,
-        currentPin: _isConfirming ? _confirmPin : _pin,
-        onNumberPressed: _onNumberPressed,
-        onDeletePressed: _onDeletePressed,
-        onBiometricPressed: _attemptBiometricAuth,
+      // กำหนดพื้นหลัง gradient ที่นี่
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [AppColors.primaryColor, AppColors.secondColor],
+          ),
+        ),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: PinScreenAppBar(),
+          body: PinScreenBody(
+            isLogin: _isLogin,
+            isConfirming: _isConfirming,
+            isAuthenticating: _isAuthenticating,
+            hasNavigated: _hasNavigated,
+            isLoading: _isLoading,
+            currentPin: _isConfirming ? _confirmPin : _pin,
+            onNumberPressed: _onNumberPressed,
+            onDeletePressed: _onDeletePressed,
+            onBiometricPressed: _attemptBiometricAuth,
+            showBiometricButton: _isLogin && _biometricEnabledInSettings && _isPinVerified,
+          ),
+        ),
       ),
     );
   }
